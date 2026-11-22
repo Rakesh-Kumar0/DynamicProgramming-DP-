@@ -7,26 +7,25 @@
 using namespace std;
 
 // recurssion function
-int fun(int i, int j, vector<vector<int>> &grid){
-    // base case
-    if(i == 0 && j == 0) return grid[0][0];
-    if(i < 0 || j < 0) return 1e9;
-    int up = grid[i][j] + fun(i-1,j,grid);
-    int left = grid[i][j] + fun(i, j-1,grid);
-    return min(up , left);
-}
+// int fun(int i, int j, vector<vector<int>> &grid){
+//     // base case
+//     if(i == 0 && j == 0) return grid[0][0];
+//     if(i < 0 || j < 0) return 1e9;
+//     int up = grid[i][j] + fun(i-1,j,grid);
+//     int left = grid[i][j] + fun(i, j-1,grid);
+//     return min(up , left);
+// }
 
 // memoization function
-// int fun(int i, int j, vector<vector<int>> &obstacleGrid, vector<vector<int>> &dp){
-//     // base case
-//     if(i >=0 && j>=0 && obstacleGrid[i][j] == 1 ) return 0;
-//     if(i == 0 && j == 0) return 1;
-//     if(i < 0 || j < 0) return 0;
-//     if(dp[i][j] != -1) return dp[i][j];
-//     int up = fun(i-1,j,obstacleGrid,dp);
-//     int left = fun(i, j-1,obstacleGrid,dp);
-//     return dp[i][j] = up + left;
-// }
+int fun(int i, int j, vector<vector<int>> &grid, vector<vector<int>> &dp){
+    // base case
+    if(i == 0 && j == 0) return grid[0][0];
+    if(i < 0 || j < 0) return 1e9 ;
+    if(dp[i][j] != -1) return dp[i][j];
+    int up = grid[i][j] + fun(i-1,j,grid,dp);
+    int left = grid[i][j] + fun(i, j-1,grid,dp);
+    return dp[i][j] = min(up , left);
+}
 
 // tabuation function
 // int fun(int n, int m, vector<vector<int>> &obstacleGrid, vector<vector<int>> &dp){
@@ -53,7 +52,7 @@ int minPathSum(vector<vector<int>> &grid){
     int n = grid.size();
     int m = grid[0].size();
     vector<vector<int>> dp(n, vector<int>(m, -1));
-    return fun(n-1, m-1,grid);
+    return fun(n-1, m-1,grid,dp);
 }
 
 int main(){
