@@ -17,42 +17,41 @@ using namespace std;
 // }
 
 // memoization function
-int fun(int i, int j, vector<vector<int>> &grid, vector<vector<int>> &dp){
-    // base case
-    if(i == 0 && j == 0) return grid[0][0];
-    if(i < 0 || j < 0) return 1e9 ;
-    if(dp[i][j] != -1) return dp[i][j];
-    int up = grid[i][j] + fun(i-1,j,grid,dp);
-    int left = grid[i][j] + fun(i, j-1,grid,dp);
-    return dp[i][j] = min(up , left);
-}
+// int fun(int i, int j, vector<vector<int>> &grid, vector<vector<int>> &dp){
+//     // base case
+//     if(i == 0 && j == 0) return grid[0][0];
+//     if(i < 0 || j < 0) return 1e9 ;
+//     if(dp[i][j] != -1) return dp[i][j];
+//     int up = grid[i][j] + fun(i-1,j,grid,dp);
+//     int left = grid[i][j] + fun(i, j-1,grid,dp);
+//     return dp[i][j] = min(up , left);
+// }
 
 // tabuation function
-// int fun(int n, int m, vector<vector<int>> &obstacleGrid, vector<vector<int>> &dp){
-//     // base case
-//     for(int i=0; i<n; i++){
-//         for(int j=0; j<m; j++){
-//             if(obstacleGrid[i][j] == 1)  dp[i][j] = 0;
-//             else if(i == 0 && j == 0)  dp[i][j] = 1;
-//             else{
-//                 int up = 0;
-//                 int left = 0;
-//                 if(i>0) up = dp[i-1][j];
-//                 if(j>0) left = dp[i][j-1];
-//                 dp[i][j] = up + left;
-//             }
-//         }
-//     }
+int fun(int n, int m, vector<vector<int>> &grid, vector<vector<int>> &dp){
+    // base case
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m; j++){
+            if(i == 0 && j == 0)  dp[i][j] = grid[0][0];
+            else{
+                int up = 1e9;
+                int left = 1e9;
+                if(i>0) up = grid[i][j] + dp[i-1][j];
+                if(j>0) left = grid[i][j] + dp[i][j-1];
+                dp[i][j] = min(up , left);
+            }
+        }
+    }
     
-//     return dp[n-1][m-1];
-// }
+    return dp[n-1][m-1];
+}
 
 
 int minPathSum(vector<vector<int>> &grid){
     int n = grid.size();
     int m = grid[0].size();
     vector<vector<int>> dp(n, vector<int>(m, -1));
-    return fun(n-1, m-1,grid,dp);
+    return fun(n, m,grid,dp);
 }
 
 int main(){
