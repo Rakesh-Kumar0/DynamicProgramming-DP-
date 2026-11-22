@@ -7,17 +7,29 @@
 using namespace std;
 
 // recurssion function
-int fun(int i, int j){
+// int fun(int i, int j){
+//     // base case
+//     if(i == 0 && j == 0) return 1;
+//     if(i < 0 || j < 0) return 0;
+//     int up = fun(i-1,j);
+//     int left = fun(i, j-1);
+//     return up + left;
+// }
+
+// memoization function
+int fun(int i, int j, vector<vector<int>> &dp){
     // base case
     if(i == 0 && j == 0) return 1;
     if(i < 0 || j < 0) return 0;
-    int up = fun(i-1,j);
-    int left = fun(i, j-1);
-    return up + left;
+    if(dp[i][j] != -1) return dp[i][j];
+    int up = fun(i-1,j,dp);
+    int left = fun(i, j-1,dp);
+    return dp[i][j] = up + left;
 }
 
 int uniquePaths(int n, int m){
-    return fun(n-1, m-1);
+    vector<vector<int>> dp(n, vector<int>(m, -1));
+    return fun(n-1, m-1,dp);
 }
 
 int main(){
