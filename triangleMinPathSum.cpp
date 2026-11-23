@@ -5,18 +5,30 @@
 #include<algorithm>
 using namespace std;
 // recurssion function
-int fun(int i, int j, vector<vector<int>> &triangle){
+// int fun(int i, int j, vector<vector<int>> &triangle){
+//     int n = triangle.size();
+//     // base case
+//     if(i == n-1) return triangle[n-1][j];
+//     int down = triangle[i][j] + fun(i+1,j,triangle);
+//     int diagonal = triangle[i][j] + fun(i+1,j+1,triangle);
+//     return min(down, diagonal);
+// }
+
+// memoization function
+int fun(int i, int j, vector<vector<int>> &triangle, vector<vector<int>> &dp){
     int n = triangle.size();
     // base case
     if(i == n-1) return triangle[n-1][j];
-    int down = triangle[i][j] + fun(i+1,j,triangle);
-    int diagonal = triangle[i][j] + fun(i+1,j+1,triangle);
-    return min(down, diagonal);
+    if(dp[i][j] != -1) return dp[i][j];
+    int down = triangle[i][j] + fun(i+1,j,triangle,dp);
+    int diagonal = triangle[i][j] + fun(i+1,j+1,triangle,dp);
+    return dp[i][j] = min(down, diagonal);
 }
 
 // calling function
 int minimumPathSum(vector<vector<int>> &triangle, int n){
-    return fun(0,0,triangle);
+    vector<vector<int>> dp(n, vector<int>(n,-1));
+    return fun(0,0,triangle,dp);
 }
 
 int main(){
