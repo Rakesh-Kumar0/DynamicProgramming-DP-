@@ -5,20 +5,36 @@
 using namespace std;
 
 // recurrence function
-bool fun(int ind, int target, vector<int> &arr){
+// bool fun(int ind, int target, vector<int> &arr){
+//     // base case
+//     if(target == 0) return true;
+//     if(ind == 0) return (arr[0] == target);
+//     bool notTake = fun(ind-1, target, arr);
+//     bool take = false;
+//     if(arr[ind] <= target){
+//         take = fun(ind-1, target - arr[ind],arr);
+//     }
+//     return take | notTake;
+// }
+
+
+// memeoization function
+bool fun(int ind, int target, vector<int> &arr,vector<vector<int>> &dp){
     // base case
     if(target == 0) return true;
     if(ind == 0) return (arr[0] == target);
-    bool notTake = fun(ind-1, target, arr);
+    if(dp[ind][target] != -1) return dp[ind][target];
+    bool notTake = fun(ind-1, target, arr,dp);
     bool take = false;
     if(arr[ind] <= target){
-        take = fun(ind-1, target - arr[ind],arr);
+        take = fun(ind-1, target - arr[ind],arr,dp);
     }
-    return take | notTake;
+    return dp[ind][target] = take | notTake;
 }
 // calling function
 bool subsetSumToK(int n, int k, vector<int> &arr){
-    return fun(n-1,k,arr);
+    vector<vector<int>> dp(n,vector<int>(k+1,-1));
+    return fun(n-1,k,arr,dp);
 }
 int main(){
     int n;
